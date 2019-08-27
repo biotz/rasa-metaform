@@ -1,0 +1,2 @@
+pyyaml>=5.1.2
+rasa-sdk>=1.2.0

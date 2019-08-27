@@ -1,0 +1,31 @@
+actions:
+  - utter_greet
+  - utter_bye
+  - utter_noworries
+  - utter_start_form
+
+intents:
+  - greet
+  - bye
+  - thanks
+  - affirm
+  - deny
+  - inform
+  - start_form:
+      use_entities: false
+
+slots:
+  dummy_slot:
+    type: unfeaturized
+
+templates:
+  utter_greet:
+    - text: Hello!
+  utter_bye:
+    - text: Bye!
+  utter_noworries:
+    - text: You are welcome. 😊
+  utter_submit:
+    - text: Form filled!
+  utter_default:
+    - text: I didn't understand you.

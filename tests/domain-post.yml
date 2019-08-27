@@ -1,0 +1,49 @@
+actions:
+- utter_greet
+- utter_bye
+- utter_noworries
+- utter_start_form
+forms:
+- sample_form
+intents:
+- greet
+- bye
+- thanks
+- affirm
+- deny
+- inform
+- start_form:
+    use_entities: false
+slots:
+  dummy_slot:
+    type: unfeaturized
+  is_in_spain:
+    type: unfeaturized
+  user_city:
+    type: unfeaturized
+  user_name:
+    type: unfeaturized
+templates:
+  utter_ask_is_in_spain:
+  - buttons:
+    - payload: /affirm
+      title: 'Yes'
+    - payload: /deny
+      title: 'No'
+    text: Are you in Spain?
+  utter_ask_user_city:
+  - text: What city?
+  utter_ask_user_name:
+  - text: What's your name?
+  utter_bye:
+  - text: Bye!
+  utter_default:
+  - text: I didn't understand you.
+  utter_greet:
+  - text: Hello!
+  utter_info_is_in_spain_False:
+  - text: "Sorry, this service is not available to you. \U0001F622"
+  utter_noworries:
+  - text: "You are welcome. \U0001F60A"
+  utter_submit:
+  - text: Form filled!

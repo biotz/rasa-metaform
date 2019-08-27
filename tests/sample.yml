@@ -1,0 +1,20 @@
+form_name: sample_form
+slots:
+  user_name:
+    type: text
+    utter: What's your name?
+  is_in_spain: 
+    type: bool
+    utter: Are you in Spain?
+    options: 
+      - payload: /affirm
+        title: "Yes"
+        slots: 
+          user_city: 
+            type: text
+            utter: What city?
+        value: true
+      - payload: /deny
+        title: "No"
+        value: false
+        info: Sorry, this service is not available to you. 😢
