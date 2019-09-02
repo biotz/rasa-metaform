@@ -6,14 +6,11 @@ with open("rasa_metaform/version.py") as f:
 with open("README.md") as f:
     long_description = f.read()
 
-with open("requirements.txt") as f:
-    requirements = f.read().splitlines()
-
 setuptools.setup(
     name="rasa_metaform",
     version=__version__,
     packages=setuptools.find_packages(exclude=["tests"]),
-    install_requirements=requirements,
+    install_requires=["pyyaml>=5.1.2", "rasa-sdk>=1.2.0"],
     include_package_data=True,
     description="Create a Rasa form from a YAML file",
     long_description=long_description,
