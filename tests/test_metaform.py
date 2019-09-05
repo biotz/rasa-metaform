@@ -10,8 +10,7 @@ domain_file = os.path.join(THIS_DIR, "domain-post.yml")
 
 
 class SampleForm(
-    rasa_metaform.MetaFormAction,
-    form_yml_file_path=os.path.join(THIS_DIR, "sample.yml"),
+    rasa_metaform.MetaFormAction, files_path=os.path.join(THIS_DIR, "sample")
 ):
     pass
 

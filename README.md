@@ -5,7 +5,7 @@
 [![Supported Python Versions](https://img.shields.io/pypi/pyversions/rasa-metaform.svg)](https://pypi.python.org/pypi/rasa-metaform)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-Rasa MetForm is a small extension of [Rasa](https://rasa.com)'s [`rasa-sdk`](https://github.com/RasaHQ/rasa-sdk) which introduces a `MetaFormAction`, an extended `FormAction`. Read about Rasa Forms in the [docs](https://rasa.com/docs/rasa/core/forms/) or in the [in-depth tutorial](https://blog.rasa.com/building-contextual-assistants-with-rasa-formaction/).
+Rasa MetForm is a small extension of [Rasa](https://rasa.com)'s [`rasa-sdk`](https://github.com/RasaHQ/rasa-sdk) which introduces a `MetaFormAction`, an extended `FormAction`. Read more in a [blog post](https://medium.com/magnetcoop/rasa-metaform-df9ca99076f3).
 
 ## Problem statement
 
@@ -31,13 +31,13 @@ pip install rasa-metaform
 
 However you might find it more useful to clone the repository and edit the `MetaFormAction` class for your form(s). We will extend the functionality with additional validation methods.
 
-### Python 3.6
-
-As the meta class is using `__init_subclass__` method ([PEP 487](https://www.python.org/dev/peps/pep-0487/)) you will need Python 3.6+ to run this.
-
 ## Form YAML file
 
 See the [`sample.yml`](https://github.com/magnetcoop/rasa-metaform/blob/master/tests/sample.yml) for an example form YAML file.
+
+## Changes
+
+* 0.2.0 -- Generate `.docx` file from a template after filling a form.
 
 ## License
 

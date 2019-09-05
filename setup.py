@@ -10,7 +10,7 @@ setuptools.setup(
     name="rasa_metaform",
     version=__version__,
     packages=setuptools.find_packages(exclude=["tests"]),
-    install_requires=["pyyaml>=5.1.2", "rasa-sdk>=1.2.0"],
+    install_requires=["docxtpl>=0.6.3", "pyyaml>=5.1.2", "rasa-sdk>=1.2.0"],
     include_package_data=True,
     description="Create a Rasa form from a YAML file",
     long_description=long_description,

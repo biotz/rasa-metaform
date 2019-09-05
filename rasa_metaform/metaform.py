@@ -1,4 +1,4 @@
-import pprint
+from docxtpl import DocxTemplate
 import yaml
 from rasa_sdk.forms import FormAction
 
@@ -55,8 +55,9 @@ class MetaFormAction(FormAction):
     yml = {"form_name": "_meta_form"}
 
     @classmethod
-    def __init_subclass__(cls, form_yml_file_path):
-        with open(form_yml_file_path) as f:
+    def __init_subclass__(cls, files_path):
+        cls.files_path = files_path
+        with open(f"{files_path}.yml") as f:
             cls.yml = yaml.load(f, Loader=yaml.Loader)
         cls.add_validations(cls.yml["slots"])
 
@@ -135,10 +136,16 @@ class MetaFormAction(FormAction):
 
     def submit(self, dispatcher, tracker, domain):
         dispatcher.utter_template("utter_submit", tracker)
-        result_dict = {}
+        context = {}
         for slot in self.required_slots(tracker):
-            result_dict[slot] = tracker.get_slot(slot)
-        dispatcher.utter_message(pprint.pformat(result_dict))
+            context[slot] = tracker.get_slot(slot)
+        tpl = DocxTemplate(f"{self.files_path}.docx")
+        tpl.render(context)
+        file_name = f"{self.name}.docx"
+        tpl.save(file_name)
+        attachment = {"file": str(open(file_name))}
+        with open(file_name, "rb") as f:
+            dispatcher.utter_attachment(str(f.read()))
         return []
 
     @classmethod
