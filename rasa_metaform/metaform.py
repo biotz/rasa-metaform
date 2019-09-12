@@ -1,18 +1,6 @@
-from docxtpl import DocxTemplate
 import yaml
 from rasa_sdk.forms import FormAction
-
-
-def get_all_slots(yml, slots):
-    for k, v in yml["slots"].items():
-        slots.append(k)
-        if "slots" in v:
-            get_all_slots(v, slots)
-        if "options" in v:
-            for o in v["options"]:
-                if "slots" in o:
-                    get_all_slots(o, slots)
-    return slots
+from rasa_sdk.interfaces import ActionExecutionRejection
 
 
 def _add_slots(yml, slots, tracker, break_early=False):
@@ -63,8 +51,6 @@ class MetaFormAction(FormAction):
 
     @classmethod
     def name(cls):
-        # type: () -> Text
-        """Unique identifier of the form"""
         return cls.yml["form_name"]
 
     @classmethod
@@ -96,6 +82,14 @@ class MetaFormAction(FormAction):
         smap = {}
         smap = self._add_slots_maps(self.yml["slots"], smap)
         return smap
+
+    def validate(self, dispatcher, tracker, domain):
+        "Override default validation so it will ask the question again"
+        try:
+            return super().validate(dispatcher, tracker, domain)
+        except ActionExecutionRejection as e:
+            dispatcher.utter_template("utter_default", tracker)
+        return []
 
     @classmethod
     def validate_factory(cls, slot, fnc):
@@ -139,13 +133,7 @@ class MetaFormAction(FormAction):
         context = {}
         for slot in self.required_slots(tracker):
             context[slot] = tracker.get_slot(slot)
-        tpl = DocxTemplate(f"{self.files_path}.docx")
-        tpl.render(context)
-        file_name = f"{self.name}.docx"
-        tpl.save(file_name)
-        attachment = {"file": str(open(file_name))}
-        with open(file_name, "rb") as f:
-            dispatcher.utter_attachment(str(f.read()))
+        dispatcher.utter_message(context)
         return []
 
     @classmethod
@@ -162,13 +150,6 @@ class MetaFormAction(FormAction):
             domain["forms"] = []
         if not cls.name() in domain["forms"]:
             domain["forms"].append(cls.name())
-        slots = []
-        slots = get_all_slots(cls.yml, slots)
-        if not "slots" in domain:
-            domain["slots"] = {}
-        for slot in slots:
-            if not slot in domain["slots"]:
-                domain["slots"][slot] = {"type": "unfeaturized"}
         templates = cls.domain_templates()
         if not "templates" in domain:
             domain["templates"] = {}

@@ -1,6 +1,4 @@
 from rasa_metaform import version
-from rasa_metaform.metaform import *
+from rasa_metaform.metaform import MetaFormAction
 
 __version__ = version.__version__
-
-print(get_all_slots)

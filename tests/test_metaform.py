@@ -1,6 +1,6 @@
 import os
 import yaml
-import rasa_metaform
+from rasa_metaform import MetaFormAction
 from rasa_sdk import Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
@@ -9,9 +9,7 @@ domain_pre_file = os.path.join(THIS_DIR, "domain-pre.yml")
 domain_file = os.path.join(THIS_DIR, "domain-post.yml")
 
 
-class SampleForm(
-    rasa_metaform.MetaFormAction, files_path=os.path.join(THIS_DIR, "sample")
-):
+class SampleForm(MetaFormAction, files_path=os.path.join(THIS_DIR, "sample")):
     pass
 
 
@@ -70,12 +68,6 @@ def test_extract_requested_slot_from_button():
     assert slot_values == {"is_in_spain": False}
 
 
-def test_get_all_slots():
-    slots = []
-    rasa_metaform.get_all_slots(form.yml, slots)
-    assert slots == ["user_name", "is_in_spain", "user_city"]
-
-
 def test_update_domain():
     form.update_domain(domain_file, domain_pre_file)
 
@@ -84,21 +76,3 @@ def test_update_domain_name():
     with open(domain_file) as f:
         domain = yaml.load(f, Loader=yaml.Loader)
     assert form.name() in domain["forms"]
-
-
-def test_update_domain_slots():
-    with open(domain_file) as f:
-        domain = yaml.load(f, Loader=yaml.Loader)
-    slots = []
-    slots = rasa_metaform.get_all_slots(form.yml, slots)
-    for slot in slots:
-        assert slot in domain["slots"]
-
-
-def test_update_domain_templates():
-    with open(domain_file) as f:
-        domain = yaml.load(f, Loader=yaml.Loader)
-    slots = []
-    slots = rasa_metaform.get_all_slots(form.yml, slots)
-    for slot in slots:
-        assert f"utter_ask_{slot}" in domain["templates"]
