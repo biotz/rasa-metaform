@@ -1,3 +1,4 @@
+import pprint
 import yaml
 from rasa_sdk.forms import FormAction
 from rasa_sdk.interfaces import ActionExecutionRejection
@@ -133,7 +134,7 @@ class MetaFormAction(FormAction):
         context = {}
         for slot in self.required_slots(tracker):
             context[slot] = tracker.get_slot(slot)
-        dispatcher.utter_message(context)
+        dispatcher.utter_message(pprint.pformat(context))
         return []
 
     @classmethod
