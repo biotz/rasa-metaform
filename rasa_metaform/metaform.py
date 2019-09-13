@@ -4,6 +4,18 @@ from rasa_sdk.forms import FormAction
 from rasa_sdk.interfaces import ActionExecutionRejection
 
 
+def get_all_slots(yml, slots):
+    for k, v in yml["slots"].items():
+        slots.append(k)
+        if "slots" in v:
+            get_all_slots(v, slots)
+        if "options" in v:
+            for o in v["options"]:
+                if "slots" in o:
+                    get_all_slots(o, slots)
+    return slots
+
+
 def _add_slots(yml, slots, tracker, break_early=False):
     for k, v in yml.items():
         if break_early:
@@ -154,6 +166,13 @@ class MetaFormAction(FormAction):
         templates = cls.domain_templates()
         if not "templates" in domain:
             domain["templates"] = {}
+        if not "slots" in domain:
+            domain["slots"] = {}
+        slots = []
+        slots = get_all_slots(cls.yml, slots)
+        for slot in slots:
+            if not slot in domain["slots"]:
+                domain["slots"][slot] = {"type": "unfeaturized"}
         for k, v in templates.items():
             if not k in domain["templates"]:
                 domain["templates"][k] = v

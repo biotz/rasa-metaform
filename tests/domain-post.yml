@@ -17,6 +17,12 @@ intents:
 slots:
   dummy_slot:
     type: unfeaturized
+  is_in_spain:
+    type: unfeaturized
+  user_city:
+    type: unfeaturized
+  user_name:
+    type: unfeaturized
 templates:
   utter_ask_is_in_spain:
   - buttons:
