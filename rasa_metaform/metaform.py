@@ -55,12 +55,12 @@ class MetaFormAction(FormAction):
     abstract = True
     yml = {"form_name": "_meta_form"}
 
-    @classmethod
-    def __init_subclass__(cls, files_path):
-        cls.files_path = files_path
-        with open(f"{files_path}.yml") as f:
-            cls.yml = yaml.load(f, Loader=yaml.Loader)
-        cls.add_validations(cls.yml["slots"])
+    def __init_subclass__(cls, files_path=None):
+        if files_path:
+            cls.files_path = files_path
+            with open(f"{files_path}.yml") as f:
+                cls.yml = yaml.load(f, Loader=yaml.Loader)
+            cls.add_validations(cls.yml["slots"])
 
     @classmethod
     def name(cls):
