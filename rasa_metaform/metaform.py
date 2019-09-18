@@ -39,17 +39,17 @@ def _add_templates(yml, templates):
             template["custom"] = [{"text": values["utter"], "upload": values["upload"]}]
         else:
             template["text"] = values["utter"]
-            if "options" in values:
-                template["buttons"] = []
-                for button in values["options"]:
-                    template["buttons"].append(
-                        {"title": button["title"], "payload": button["payload"]}
-                    )
-                    if "slots" in button:
-                        templates = _add_templates(button["slots"], templates)
-                        if "info" in button:
-                            tname = f'utter_info_{slot}_{button["value"]}'
-                            templates[tname] = [{"text": button["info"]}]
+        if "options" in values:
+            template["buttons"] = []
+            for button in values["options"]:
+                template["buttons"].append(
+                    {"title": button["title"], "payload": button["payload"]}
+                )
+                if "slots" in button:
+                    templates = _add_templates(button["slots"], templates)
+                if "info" in button:
+                    tname = f'utter_info_{slot}_{button["value"]}'
+                    templates[tname] = [{"text": button["info"]}]
         templates[f"utter_ask_{slot}"] = [template]
     return templates
 
