@@ -35,18 +35,21 @@ def _add_slots(yml, slots, tracker, break_early=False):
 def _add_templates(yml, templates):
     for slot, values in yml.items():
         template = {}
-        template["text"] = values["utter"]
-        if "options" in values:
-            template["buttons"] = []
-            for button in values["options"]:
-                template["buttons"].append(
-                    {"title": button["title"], "payload": button["payload"]}
-                )
-                if "slots" in button:
-                    templates = _add_templates(button["slots"], templates)
-                if "info" in button:
-                    tname = f'utter_info_{slot}_{button["value"]}'
-                    templates[tname] = [{"text": button["info"]}]
+        if "upload" in values:
+            template["custom"] = [{"text": values["utter"], "upload": values["upload"]}]
+        else:
+            template["text"] = values["utter"]
+            if "options" in values:
+                template["buttons"] = []
+                for button in values["options"]:
+                    template["buttons"].append(
+                        {"title": button["title"], "payload": button["payload"]}
+                    )
+                    if "slots" in button:
+                        templates = _add_templates(button["slots"], templates)
+                        if "info" in button:
+                            tname = f'utter_info_{slot}_{button["value"]}'
+                            templates[tname] = [{"text": button["info"]}]
         templates[f"utter_ask_{slot}"] = [template]
     return templates
 
@@ -74,7 +77,7 @@ class MetaFormAction(FormAction):
 
     def _add_slots_maps(self, yml, smap):
         for k, v in yml.items():
-            if v["type"] == "text":
+            if v["type"] == "text" or v["type"] == "doc":
                 smap[k] = self.from_text()
             if v["type"] == "bool":
                 smap[k] = [
