@@ -86,6 +86,8 @@ class MetaFormAction(FormAction):
                 ]
             if v["type"] == "entity":
                 smap[k] = self.from_entity(entity=k, intent="inform")
+            if v["type"] == "number":
+                smap[k] = self.from_entity(entity="number")
             if "slots" in v:
                 smap = self._add_slots_maps(v["slots"], smap)
             if "options" in v:
