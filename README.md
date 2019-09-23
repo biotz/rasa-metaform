@@ -35,10 +35,6 @@ However you might find it more useful to clone the repository and edit the `Meta
 
 See the [`sample.yml`](https://github.com/magnetcoop/rasa-metaform/blob/master/tests/sample.yml) for an example form YAML file.
 
-## Changes
-
-* 0.2.0 -- Generate `.docx` file from a template after filling a form.
-
 ## License
 
 Licensed under the Apache License, Version 2.0. Copyright 2019 Magnet S Coop. Copy of the [license](https://github.com/magnetcoop/rasa-metaform/blob/master/LICENSE.txt).

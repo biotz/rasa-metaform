@@ -25,9 +25,9 @@ def _add_slots(yml, slots, tracker, break_early=False):
             break_early = add_slots(v["slots"], slots, tracker, break_early)
         if "options" in v:
             for o in v["options"]:
-                if "action" in o and tracker.get_slot(k) == o["value"]:
+                if "action" in o and tracker.get_slot(k) == o.get("value"):
                     return True
-                if "slots" in o and tracker.get_slot(k) == o["value"]:
+                if "slots" in o and tracker.get_slot(k) == o.get("value"):
                     break_early = _add_slots(o["slots"], slots, tracker, break_early)
     return break_early
 
@@ -79,14 +79,14 @@ class MetaFormAction(FormAction):
         for k, v in yml.items():
             if v["type"] == "text" or v["type"] == "doc":
                 smap[k] = self.from_text()
-            if v["type"] == "bool":
+            elif v["type"] == "bool":
                 smap[k] = [
                     self.from_intent(intent="affirm", value=True),
                     self.from_intent(intent="deny", value=False),
                 ]
-            if v["type"] == "entity":
+            elif v["type"] == "entity":
                 smap[k] = self.from_entity(entity=k, intent="inform")
-            if v["type"] == "number":
+            elif v["type"] == "number":
                 smap[k] = self.from_entity(entity="number")
             if "slots" in v:
                 smap = self._add_slots_maps(v["slots"], smap)
